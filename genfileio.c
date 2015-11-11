@@ -27,6 +27,7 @@ int main(int ac, char **av) {
     unsigned long offset = 0;
     unsigned long int fsize = 0;
     unsigned long int cRead, cWrite;
+    unsigned long int IOps;
 
     while ((c = getopt (ac, av, "b:f:")) != -1) {
         switch (c)
@@ -83,7 +84,7 @@ int main(int ac, char **av) {
     srand (time(NULL));
 
     otime = ctime = time(NULL);
-    cRead = cWrite = 0;
+    IOps = cRead = cWrite = 0;
 
     while (1) {
     
@@ -91,8 +92,8 @@ int main(int ac, char **av) {
         ctime = time(NULL);
         if ((ctime - otime) >= 1) {
             fprintf(stdout, "\t[-READ] %u MB in %d seconds\n", (cRead/1024/1024), (ctime - otime));
-            fprintf(stdout, "\t[WRITE] %u MB in %d seconds\n", (cWrite/1024/1024), (ctime - otime));
-            cRead = cWrite = 0;
+            fprintf(stdout, "\t[WRITE] %u MB in %d seconds (%d IOs)\n", (cWrite/1024/1024), (ctime - otime), IOps);
+            IOps = cRead = cWrite = 0;
             otime = ctime;
         }
 
@@ -146,6 +147,7 @@ int main(int ac, char **av) {
         }
 
         cWrite += nbytes;
+	IOps++;
         //fprintf(stdout, "\t* W <pos=%d> <size=%d>\n", offset, nbytes);
         free(rbuf);
     }
