@@ -139,13 +139,12 @@ int main(int ac, char **av) {
     cCycle = cRead = cWrite = 0;
     iOut = 0;
 
-    fprintf(stdout, "\tMB in\tMB out\tsec elapsed\t# cycle\n");
     while (1) {
     
         /* current time */
         ctime = time(NULL);
         if ((ctime - otime) >= 1) {
-            if (iOut % 20) {
+            if ((iOut % 20) == 0) {
                 fprintf(stdout, "\tMB in\tMB out\tsec elapsed\t# cycle\n");
             }
             fprintf(stdout, "\t%4u\t%6u\t%11.d\t%7.d\n", (cRead/1024/1024), (cWrite/1024/1024), (ctime - otime), cCycle);
